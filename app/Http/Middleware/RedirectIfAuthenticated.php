@@ -27,6 +27,10 @@ class RedirectIfAuthenticated
                 return redirect(AuthRedirectionConstants::ADMIN_DASHBOARD);
             }
 
+            if ($guard == "organization" && Auth::guard($guard)->check()) {
+                return redirect(AuthRedirectionConstants::ORGANIZATION_DASHBOARD);
+            }
+
             if (Auth::guard($guard)->check()) {
                 return redirect(RouteServiceProvider::HOME);
             }

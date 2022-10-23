@@ -51,6 +51,10 @@ class Handler extends ExceptionHandler
             return redirect()->guest(AuthRedirectionConstants::ADMIN_LOGIN);
         }
 
+        if ($request->is('organization') || $request->is('organization/*')) {
+            return redirect()->guest(AuthRedirectionConstants::ORGANIZATION_LOGIN);
+        }
+
         return redirect()->guest(AuthRedirectionConstants::USER_LOGIN);
     }
 }
