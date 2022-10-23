@@ -36,17 +36,8 @@ class RouteServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->configureRateLimiting();
-
-        $this->routes(function () {
-            Route::prefix('api')
-                ->middleware('api')
-                ->namespace($this->namespace)
-                ->group(base_path('routes/api.php'));
-
-            Route::middleware('web')
-                ->namespace($this->namespace)
-                ->group(base_path('routes/web.php'));
-        });
+        $this->mapApiRoutes();
+        $this->mapWebRoutes();
     }
 
     /**
@@ -58,6 +49,78 @@ class RouteServiceProvider extends ServiceProvider
     {
         RateLimiter::for('api', function (Request $request) {
             return Limit::perMinute(60)->by(optional($request->user())->id ?: $request->ip());
+        });
+    }
+
+    /**
+     * Configure api routes for the application.
+     *
+     * @return void
+     */
+    protected function mapApiRoutes()
+    {
+        $this->routes(function () {
+
+            Route::prefix('api')
+                ->middleware('api')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/api.php'));
+
+            Route::middleware('api')
+                ->prefix('api/admin')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/api/admin.php'));
+
+            Route::middleware('api')
+                ->prefix('api/user')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/api/user.php'));
+
+            Route::middleware('api')
+                ->prefix('api/organization')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/api/organization.php'));
+
+            Route::middleware('api')
+                ->prefix('api/technicians')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/api/technicians.php'));
+
+        });
+
+    }
+
+    /**
+     * Configure web routes for the application.
+     *
+     * @return void
+     */
+    protected function mapWebRoutes()
+    {
+        $this->routes(function () {
+            Route::middleware('web')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/web.php'));
+
+            Route::middleware('web')
+                ->prefix('admin')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/web/admin.php'));
+
+            Route::middleware('web')
+                ->prefix('user')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/web/user.php'));
+
+            Route::middleware('web')
+                ->prefix('organization')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/web/organization.php'));
+
+            Route::middleware('web')
+                ->prefix('technicians')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/web/technicians.php'));
         });
     }
 }
