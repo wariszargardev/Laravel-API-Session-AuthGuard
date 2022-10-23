@@ -6,6 +6,6 @@ class UserServices
 {
     public function __construct()
     {
-        
+
     }
 }
