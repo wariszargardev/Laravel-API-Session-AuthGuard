@@ -1,5 +1,5 @@
 <?php
-namespace App\Http\Traits;
+namespace App\Http\Traits\Api;
 
 use Illuminate\Support\Facades\Validator;
 

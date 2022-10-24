@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\User;
+use Auth;
 
 class UserRepository extends AbstractRepository
 {
@@ -12,4 +13,12 @@ class UserRepository extends AbstractRepository
     {
         $this->model = $model;
     }
+
+    public function login($data){
+        if(Auth::guard('user')->attempt(['email' => $data['email'], 'password' => $data['password']])){
+            return true;
+        }
+        return false;
+    }
+
 }
