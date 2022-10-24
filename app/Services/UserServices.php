@@ -12,11 +12,11 @@ class UserServices extends AbstractService
         $this->userRepository= $userRepository;
     }
 
-    public function login($data){
+    public function login($formInput){
 
-        if ($this->userRepository->login($data)) {
+        if ($this->userRepository->login($formInput)) {
             $user = Auth::guard('user')->user();
-            $data['token']=  $user->createToken('Token Name')->accessToken;
+            $data['token']=  $user->createToken(env('APP_NAME'))->accessToken;
             $data['user'] = $user;
             return $this->successResponse($data, 'User login successfully');
         }
