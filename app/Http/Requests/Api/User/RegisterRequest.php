@@ -1,18 +1,21 @@
 <?php
 
-namespace App\Http\Requests\Api;
+namespace App\Http\Requests\Api\User;
 
 use App\Http\Traits\Api\ApiFailedValidation;
 use Illuminate\Foundation\Http\FormRequest;
 
-class LoginRequest extends FormRequest
+class RegisterRequest extends FormRequest
 {
     use ApiFailedValidation;
 
     public function rules(): array
     {
         return [
-            'email' => 'required|string|email',
+            'name' => 'required|string',
+            'email' => 'required|string|email|unique:users',
+            'phone_number' => 'required|string|min:8',
+            'cnic' => 'required|string',
             'password' => 'required|string|min:8',
         ];
     }
@@ -21,5 +24,4 @@ class LoginRequest extends FormRequest
     {
         return true;
     }
-
 }

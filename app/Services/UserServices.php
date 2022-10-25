@@ -20,4 +20,13 @@ class UserServices extends AbstractService
 
         return $this->errorMessage('Unauthorized', 401);
     }
+
+    public function register($formInput){
+        $this->userRepository->register($formInput);
+        return $this->successResponse($this->userRepository->getResponseAfterLogin(), 'User login successfully');
+    }
+
+    public function profile(){
+        return $this->userRepository->profile();
+    }
 }

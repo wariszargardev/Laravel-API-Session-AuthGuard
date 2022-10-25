@@ -16,6 +16,21 @@ class UserRepository extends AbstractRepository
     }
 
     public function login($data){
+        if(Auth::guard('organization')->attempt(['email' => $data['email'], 'password' => $data['password']])){
+            return true;
+        }
+        return false;
+    }
+
+    public function register($data){
+
+        $this->model->name = $data['name'];
+        $this->model->email = $data['email'];
+        $this->model->cnic = $data['cnic'];
+        $this->model->phone_number = $data['phone_number'];
+        $this->model->password = \Hash::make($data['password']);
+        $this->model->save();
+
         if(Auth::guard('user')->attempt(['email' => $data['email'], 'password' => $data['password']])){
             return true;
         }
@@ -28,5 +43,10 @@ class UserRepository extends AbstractRepository
         $data['token']=  $user->createToken(env('APP_NAME'))->accessToken;
         $data['user'] = new UserResource($user);
         return $data;
+    }
+
+    public function profile(){
+        $user = Auth::guard('user-api')->user();
+        return new UserResource($user);
     }
 }
