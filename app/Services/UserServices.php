@@ -15,10 +15,7 @@ class UserServices extends AbstractService
     public function login($formInput){
 
         if ($this->userRepository->login($formInput)) {
-            $user = Auth::guard('user')->user();
-            $data['token']=  $user->createToken(env('APP_NAME'))->accessToken;
-            $data['user'] = $user;
-            return $this->successResponse($data, 'User login successfully');
+            return $this->successResponse($this->userRepository->getResponseAfterLogin(), 'User login successfully');
         }
 
         return $this->errorMessage('Unauthorized', 401);

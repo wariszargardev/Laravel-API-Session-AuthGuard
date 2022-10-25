@@ -28,7 +28,5 @@ class AuthServiceProvider extends ServiceProvider
 
         Passport::routes();
 
-        Passport::loadKeysFrom(__DIR__.'/../secrets/oauth');
-
     }
 }
