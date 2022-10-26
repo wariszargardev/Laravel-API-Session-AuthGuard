@@ -23,7 +23,7 @@ class UserServices extends AbstractService
 
     public function register($formInput){
         $this->userRepository->register($formInput);
-        return $this->successResponse($this->userRepository->getResponseAfterLogin(), 'User login successfully');
+        return $this->successResponse($this->userRepository->getResponseAfterLogin(), 'User register successfully');
     }
 
     public function profile(){
