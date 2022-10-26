@@ -1,8 +1,12 @@
 <?php
 namespace App\Repositories;
 
+use App\Http\Traits\Api\ApiResponse;
+use App\Http\Traits\Api\ApiValidation;
+
 abstract class AbstractRepository
 {
+    use ApiResponse, ApiValidation;
     /**
      * Hold current model from child class construct
      * @var Eqluent Model

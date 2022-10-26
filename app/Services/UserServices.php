@@ -1,11 +1,32 @@
 <?php
 
-namespace App\Services\User;
+namespace App\Services;
 
-class UserServices
+use App\Repositories\UserRepository;
+use Auth;
+
+class UserServices extends AbstractService
 {
-    public function __construct()
+    public function __construct(UserRepository $userRepository)
     {
+        $this->userRepository= $userRepository;
+    }
 
+    public function login($formInput){
+
+        if ($this->userRepository->login($formInput)) {
+            return $this->successResponse($this->userRepository->getResponseAfterLogin(), 'User login successfully');
+        }
+
+        return $this->errorMessage('Unauthorized', 401);
+    }
+
+    public function register($formInput){
+        $this->userRepository->register($formInput);
+        return $this->successResponse($this->userRepository->getResponseAfterLogin(), 'User register successfully');
+    }
+
+    public function profile(){
+        return $this->userRepository->profile();
     }
 }
