@@ -15,7 +15,7 @@ trait ApiValidation {
         if ($validator->fails()) {
             return response()->json([
                 'status' => 400,
-                'message' => $validator->messages()->first()
+                'errorMessage' => $validator->messages()->first()
             ], 400);
         } else {
             return true;

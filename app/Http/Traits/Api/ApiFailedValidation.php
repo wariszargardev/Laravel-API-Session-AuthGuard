@@ -9,8 +9,8 @@ trait ApiFailedValidation {
     function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(response()->json([
-            'message' => 'Validation errors',
-            'error' => $validator->errors()->first(),
+            'status' => 400,
+            'errorMessage' => $validator->errors()->first(),
             'errors' => $validator->errors(),
         ]));
     }

@@ -18,7 +18,7 @@ class UserServices extends AbstractService
             return $this->successResponse($this->userRepository->getResponseAfterLogin(), 'User login successfully');
         }
 
-        return $this->errorMessage('Unauthorized', 401);
+        return $this->errorMessage('Invalid credentials', 401);
     }
 
     public function register($formInput){

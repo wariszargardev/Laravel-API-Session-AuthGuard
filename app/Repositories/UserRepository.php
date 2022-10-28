@@ -2,9 +2,10 @@
 
 namespace App\Repositories;
 
-use App\Http\Resources\User\OrganizationResource;
+use App\Http\Resources\User\UserResource;
 use App\Models\User;
 use Auth;
+use Illuminate\Support\Facades\Hash;
 
 class UserRepository extends AbstractRepository
 {
@@ -16,7 +17,7 @@ class UserRepository extends AbstractRepository
     }
 
     public function login($data){
-        if(Auth::guard('organization')->attempt(['email' => $data['email'], 'password' => $data['password']])){
+        if(Auth::guard('user')->attempt(['email' => $data['email'], 'password' => $data['password']])){
             return true;
         }
         return false;
@@ -28,7 +29,7 @@ class UserRepository extends AbstractRepository
         $this->model->email = $data['email'];
         $this->model->cnic = $data['cnic'];
         $this->model->phone_number = $data['phone_number'];
-        $this->model->password = \Hash::make($data['password']);
+        $this->model->password = Hash::make($data['password']);
         $this->model->save();
 
         if(Auth::guard('user')->attempt(['email' => $data['email'], 'password' => $data['password']])){
@@ -41,12 +42,12 @@ class UserRepository extends AbstractRepository
         $data = array();
         $user = Auth::guard('user')->user();
         $data['token']=  $user->createToken(env('APP_NAME'))->accessToken;
-        $data['user'] = new OrganizationResource($user);
+        $data['user'] = new UserResource($user);
         return $data;
     }
 
     public function profile(){
         $user = Auth::guard('user-api')->user();
-        return new OrganizationResource($user);
+        return new UserResource($user);
     }
 }
